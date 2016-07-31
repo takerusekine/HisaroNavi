@@ -75,6 +75,7 @@ function areaselect() {
             $('input[name=area_flash]').attr('value', txt);
             $('#areaname').attr('value', txt);
             $('#areaname').attr('data-area', val);
+            $.cookie('hisaronavi_area', txt);
         });
     });
 }

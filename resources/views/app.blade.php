@@ -12,6 +12,7 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
   <link href='https://fonts.googleapis.com/css?family=Playball' rel='stylesheet' type='text/css'>
+  <script src="{{asset('js/jquery.cookie.min.js')}}" charset="utf-8"></script>
   <script src="{{asset('js/tether.min.js')}}" charset="utf-8"></script>
   <script src="{{asset('js/bootstrap.min.js')}}" charset="utf-8"></script>
   <script src="{{asset('js/jquery.japan-map.min.js')}}" charset="utf-8"></script>
