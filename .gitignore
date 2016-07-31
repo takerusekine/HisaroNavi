@@ -1,0 +1,13 @@
+/vendor
+/node_modules
+Homestead.yaml
+Homestead.json
+.env
+.env-staging
+.env.example
+/.vscode
+/bootstrap
+
+/tests
+/storage
+/resources/assets
