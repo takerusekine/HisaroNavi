@@ -11,7 +11,7 @@ use App\Option;
 
 class SalonsController extends Controller
 {
-    public function areaEvaluate($area_code)
+    function areaEvaluate($area_code)
     {
         $evalarea = array(
             1001=>'札幌市',

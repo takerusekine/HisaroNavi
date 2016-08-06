@@ -1,16 +1,42 @@
     <div class="row">
         <div class="col-xs-12">
-            <h2>条件検索</h2>
-            <div>
-               <label for="searcharea"  class="label label-warning">現在のエリア</label>
-               <span>{{$areaname}}</span>
-               <p class="count" id="count">
+            <h2>条件検索結果</h2>
+            <div class="mt-5 letter-brown">
+               <span class="label label-secondary">エリア</span>
+                   @if (is_array($areaname))
+                       @foreach ($areaname as $an)
+                           @unless ($an === end($areaname))
+                               {{$an.' / '}}
+                            @else
+                                {{$an}}
+                           @endunless
+                       @endforeach
+                    @else
+                        {{$areaname}}
+                   @endif
+           </div>
+               <div class="mt-5 letter-brown">
+                   <span class="label label-secondary">
+                       条件
+                   </span>
+                   @if (is_array($cond))
+                       @foreach ($cond as $c)
+                           @unless ($c === end($cond))
+                               {{$c.' / '}}
+                           @else
+                               {{$c}}
+                           @endunless
+                       @endforeach
+                   @else
+                     {{$cond}}
+                   @endif
+               </div>
+               <p class="mt-0 mt-5">
                    {{'Hits:'. count($salons). '件'}}
                </p>
-               <button type="button" class="btn btn-block btn-warning" data-toggle="modal" data-target="#kodawari-modal">
-                   こだわり条件で絞る
-               </button>
-           </div>
+               <a href="{{action('RegionController@getDetailArea')}}" class="btn btn-default">
+                   <i class="material-icons">search</i><span>エリアを絞り込む</span>
+               </a>
         </div>
     </div>
     <div class="row" id="kodawari-row">
@@ -60,18 +86,10 @@
                                         </dt>
                                         <dd>
                                             <p class="ellipsis">
-                                                <?php $min_price = array(); ?>
-                                                    @foreach ($salon->menu as $menu)
-                                                        <?php
-                                                        if ($menu['grade'] !== '顔' && !empty($menu->menu_price)) {
-                                                            $min_price[] = $menu['menu_price'];
-                                                        }
-                                                         ?>
-                                                    @endforeach
-                                                    @if (empty($min_price))
+                                                    @if (empty($salon->min_price))
                                                         詳細データなし
                                                     @else
-                                                        {{number_format(min($min_price)). '円〜'}}
+                                                        {{number_format($salon->min_price). '円〜'}}
                                                     @endif
                                             </p>
                                         </dd>

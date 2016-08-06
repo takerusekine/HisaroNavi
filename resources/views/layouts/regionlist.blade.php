@@ -45,18 +45,10 @@
                                         </dt>
                                         <dd>
                                             <p class="ellipsis">
-                                                <?php $min_price = array(); ?>
-                                                @foreach ($salon->menu as $menu)
-                                                    <?php
-                                                    if ($menu['grade'] !== '顔' && !empty($menu->menu_price)) {
-                                                        $min_price[] = $menu['menu_price'];
-                                                    }
-                                                    ?>
-                                                @endforeach
-                                                @if (empty($min_price))
+                                                @if (empty($salon->min_price))
                                                     詳細データなし
                                                 @else
-                                                    {{number_format(min($min_price)). '円〜'}}
+                                                    {{number_format($salon->min_price). '円〜'}}
                                                 @endif
                                             </p>
                                         </dd>

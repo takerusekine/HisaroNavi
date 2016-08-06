@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\SalonsController;
+use App\Http\Controllers\RegionController;
 use App\Salon;
 use App\Menu;
 
@@ -55,187 +57,235 @@ class FeatureController extends Controller
         }
     }
 
+    public function getFeatureArea(Request $request)
+    {
+        $area = $request->session()->get('hisaronavi_area');
+        $r = new RegionController();
+        $feature_title = $request->session()->get('feature_title');
+        $titletag = $area.'の'.$feature_title;
+        $description = $area.'の'. $feature_title .'情報。お得なクーポン、口コミ、住所、電話番号、日焼け情報など便利な情報満載です。日サロナビでお得な情報をゲットしよう！';
+        $keywords = $feature_title . ','.$area.',日焼け,日サロ,日サロナビ';
+        $large_areacode = $r->largeAreaEv($area);
+        if ($feature_title == '格安サロン') {
+            $salons = Salon::whereBetween('area_code', [$large_areacode, $large_areacode + 999])->get();
+        } else {
+            $salons = Salon::whereBetween('area_code', [$large_areacode, $large_areacode + 999])
+            ->where('kodawari', 'like', '%'.$feature_title.'%')
+            ->get();
+        }
+
+        $selectAreaArr = $r->evalateAreaName($area);
+        return view('feats.featurearea', [
+            'area' => $area,
+            'selectAreaArr' => $selectAreaArr,
+            'salons' => $salons,
+            'title' => $feature_title,
+            'titletag' => $titletag,
+            'keywords' => $keywords,
+            'description' => $description,
+        ]);
+    }
+
     public function getReasonable(Request $request)
     {
-        $area_flash = $request->input('area_flash');
-
-        switch ($area_flash) {
-            case '北海道':
-                $salons_id = Salon::whereBetween('area_code', [1000, 1999])
-                ->orderBy('area_code')->lists('id');
-                break;
-
-            case '東北':
-                $salons_id = Salon::whereBetween('area_code', [2000, 2999])->orderBy('area_code')->lists('id');
-                break;
-            case '北陸':
-                $salons_id = Salon::whereBetween('area_code', [3000, 3999])
-                ->orderBy('area_code')->lists('id');
-                break;
-
-            case '関東':
-                $salons_id = Salon::whereBetween('area_code', [4000, 4999])
-                ->orderBy('area_code')->lists('id');
-                break;
-
-            case '甲信越':
-                $salons_id = Salon::whereBetween('area_code', [5000, 5999])
-                ->orderBy('area_code')->lists('id');
-                break;
-
-            case '東海':
-                $salons_id = Salon::whereBetween('area_code', [6000, 6999])
-                ->orderBy('area_code')->lists('id');
-                break;
-
-            case '関西':
-                $salons_id = Salon::whereBetween('area_code', [7000, 7999])
-                ->orderBy('area_code')->lists('id');
-                break;
-
-            case '中国':
-                $salons_id = Salon::whereBetween('area_code', [8000, 8999])
-                ->orderBy('area_code')->lists('id');
-                break;
-
-            case '四国':
-                $salons_id = Salon::whereBetween('area_code', [9000, 9999])->orderBy('area_code')->lists('id');
-                break;
-            case '九州・沖縄':
-                $salons_id = Salon::whereBetween('area_code', [10000, 10999])->orderBy('area_code')->lists('id');
-                break;
-        }
-
-        $beforefilter = Menu::whereIn('salon_id', $salons_id)
-        ->whereNotIn('grade', ['顔', '-'])
-        ->whereNotIn('menu_price',['0'])
-        ->whereNotNull('menu_price')
-        ->orderBy('salon_id', 'ASC')
-        ->orderBy('menu_price', 'ASC')->get();
-
-        $menu = $beforefilter->unique(function ($uniqueitem)
+        $request->session()->put('hisaronavi_area', $_COOKIE['hisaronavi_area']);
+        $area_flash = $request->session()->get('hisaronavi_area');
+        $r = new RegionController();
+        $area_code = $r->largeAreaEv($area_flash);
+        $before_filter = Salon::whereBetween('area_code', [$area_code, $area_code + 999])->whereNotNull('min_price')->get();
+        $filtered = $before_filter->filter(function ($item)
         {
-            return $uniqueitem->salon_id;
+            return $item['min_price'] <= 1500;
         });
 
-        $menu->all();
+        $salons = $filtered->all();
 
-
-
-        $filteredmenu = $menu->filter(function ($item)
-        {
-            return $item->menu_price <= 1500;
-        });
-
-        $refinedsalon = [];
-        foreach ($filteredmenu as $f) {
-            $refinedsalon[] = $f->salon_id;
-        }
-
-        $salons = Salon::whereIn('id', $refinedsalon)->get();
-        $title = '格安サロン';
-        $titletag = $area_flash.'の格安サロン';
-        $description = $area_flash.'の格安サロン情報。お得なクーポン、口コミ、住所、電話番号、日焼け情報など便利な情報満載です。日サロナビでお得な情報をゲットしよう！';
+        $request->session()->put('feature_title', $_COOKIE['feature_title']);
+        $title = $request->session()->get('feature_title');
+        $titletag = $area_flash.'の'.$title;
+        $description = $area_flash.'の'. $title .'情報。お得なクーポン、口コミ、住所、電話番号、日焼け情報など便利な情報満載です。日サロナビでお得な情報をゲットしよう！';
         $keywords = '格安サロン,'.$area_flash.',日焼け,日サロ,日サロナビ';
-        return view('feats.common', ['keywords' => $keywords, 'title' => $title, 'titletag' => $titletag, 'description' => $description, 'salons' => $salons, 'area' => $area_flash]);
+        return view('feats.common', ['keywords' => $keywords, 'title' => $title, 'titletag' => $titletag, 'description' => $description, 'salons' => $salons, 'area_flash' => $area_flash]);
 
+    }
+
+    public function getReasonableResult(Request $request)
+    {
+        $detail_area = $_GET['areachoice'];
+        $title = $request->session()->get('feature_title');
+        $before_filter = Salon::whereIn('area_code', $detail_area)->whereNotNull('min_price')->get();
+        $filtered = $before_filter->filter(function ($item)
+        {
+            return $item['min_price'] <= 1500;
+        });
+        $s = new SalonsController();
+        $darray = array();
+        foreach ($detail_area as $key => $value) {
+            array_push($darray, $s->areaEvaluate($value));
+        }
+        $d_area_name = implode(',' , $darray);
+        $salons = $filtered->all();
+
+        $titletag = $d_area_name.'の'.$title;
+        $description = $d_area_name.'の'. $title .'情報。お得なクーポン、口コミ、住所、電話番号、日焼け情報など便利な情報満載です。日サロナビでお得な情報をゲットしよう！';
+        $keywords = $title.','.$d_area_name.',日焼け,日サロ,日サロナビ';
+
+        return view('feats.resonableresult', [
+            'salons' => $salons,
+            'titletag' => $titletag,
+            'keywords' => $keywords,
+            'description' => $description,
+            'title' => $title,
+            'd_area_name' => $d_area_name,
+        ]);
     }
 
     public function getFirstDiscount(Request $request)
     {
-        $area_flash = $request->input('area_flash');
+        $request->session()->put('hisaronavi_area', $_COOKIE['hisaronavi_area']);
+
+        $area_flash = $request->session()->get('hisaronavi_area');
         $area_code = $this->evaluateArea($area_flash);
 
         $salons = Salon::whereBetween('area_code', [$area_code, $area_code+999])
         ->where('kodawari', 'like', '%初回割引あり%')
         ->get();
-        $title = '初回割引あり';
+        $request->session()->put('feature_title', $_COOKIE['feature_title']);
+        $title = $request->session()->get('feature_title');
         $titletag = $area_flash.'の初回割引ありの日焼けサロン';
         $description = $area_flash.'の初回割引ありの日焼けサロン情報。お得なクーポン、口コミ、住所、電話番号、日焼け情報など便利な情報満載です。日サロナビでお得な情報をゲットしよう！';
         $keywords = '初回割引あり,'.$area_flash.',日焼け,日サロ,日サロナビ';
-        return view('feats.common', ['keywords' => $keywords, 'title' => $title, 'titletag' => $titletag, 'description' => $description, 'salons' => $salons, 'area' => $area_flash, 'area_code' => $area_code]);
+        return view('feats.common', ['keywords' => $keywords, 'title' => $title, 'titletag' => $titletag, 'description' => $description, 'salons' => $salons, 'area_flash' => $area_flash, 'area_code' => $area_code]);
 
     }
 
     public function getStudentDiscount(Request $request)
     {
-        $area_flash = $request->input('area_flash');
+        $request->session()->put('hisaronavi_area', $_COOKIE['hisaronavi_area']);
+
+        $area_flash = $request->session()->get('hisaronavi_area');
         $area_code = $this->evaluateArea($area_flash);
 
         $salons = Salon::whereBetween('area_code', [$area_code, $area_code+999])
         ->where('kodawari', 'like', '%学割あり%')
         ->get();
-        $title = '学割あり';
+        $request->session()->put('feature_title', $_COOKIE['feature_title']);
+        $title = $request->session()->get('feature_title');
         $titletag = $area_flash.'の学割ありの日焼けサロン';
         $description = $area_flash.'の学割ありの日焼けサロン情報。お得なクーポン、口コミ、住所、電話番号、日焼け情報など便利な情報満載です。日サロナビでお得な情報をゲットしよう！';
         $keywords = '学割あり,'.$area_flash.',日焼け,日サロ,日サロナビ';
-        return view('feats.common', ['keywords' => $keywords, 'title' => $title, 'titletag' => $titletag, 'description' => $description, 'salons' => $salons, 'area' => $area_flash, 'area_code' => $area_code]);
+        return view('feats.common', ['keywords' => $keywords, 'title' => $title, 'titletag' => $titletag, 'description' => $description, 'salons' => $salons, 'area_flash' => $area_flash, 'area_code' => $area_code]);
 
     }
 
     public function getMidnight(Request $request)
     {
-        $area_flash = $request->input('area_flash');
+        $request->session()->put('hisaronavi_area', $_COOKIE['hisaronavi_area']);
+
+        $area_flash = $request->session()->get('hisaronavi_area');
         $area_code = $this->evaluateArea($area_flash);
 
         $salons = Salon::whereBetween('area_code', [$area_code, $area_code+999])
         ->where('kodawari', 'like', '%深夜まで営業%')
         ->get();
-        $title = '深夜まで営業';
+        $request->session()->put('feature_title', $_COOKIE['feature_title']);
+        $title = $request->session()->get('feature_title');
         $titletag = $area_flash.'の深夜まで営業している日焼けサロン';
         $description = $area_flash.'の深夜まで営業している日焼けサロン情報。お得なクーポン、口コミ、住所、電話番号、日焼け情報など便利な情報満載です。日サロナビでお得な情報をゲットしよう！';
         $keywords = '深夜まで営業,'.$area_flash.',日焼け,日サロ,日サロナビ';
-        return view('feats.common', ['keywords' => $keywords, 'title' => $title, 'titletag' => $titletag, 'description' => $description, 'salons' => $salons, 'area' => $area_flash, 'area_code' => $area_code]);
+        return view('feats.common', ['keywords' => $keywords, 'title' => $title, 'titletag' => $titletag, 'description' => $description, 'salons' => $salons, 'area_flash' => $area_flash, 'area_code' => $area_code]);
 
     }
 
     public function getWomanDiscount(Request $request)
     {
-        $area_flash = $request->input('area_flash');
+        $request->session()->put('hisaronavi_area', $_COOKIE['hisaronavi_area']);
+
+        $area_flash = $request->session()->get('hisaronavi_area');
         $area_code = $this->evaluateArea($area_flash);
 
         $salons = Salon::whereBetween('area_code', [$area_code, $area_code+999])
         ->where('kodawari', 'like', '%女性割引あり%')
         ->get();
-        $title = '女性割引あり';
+        $request->session()->put('feature_title', $_COOKIE['feature_title']);
+        $title = $request->session()->get('feature_title');
         $titletag = $area_flash.'の女性割引ありの日焼けサロン';
         $description = $area_flash.'の女性割引ありの日焼けサロン情報。お得なクーポン、口コミ、住所、電話番号、日焼け情報など便利な情報満載です。日サロナビでお得な情報をゲットしよう！';
         $keywords = '女性割引あり,'.$area_flash.',日焼け,日サロ,日サロナビ';
-        return view('feats.common', ['keywords' => $keywords, 'title' => $title, 'titletag' => $titletag, 'description' => $description, 'salons' => $salons, 'area' => $area_flash, 'area_code' => $area_code]);
+        return view('feats.common', ['keywords' => $keywords, 'title' => $title, 'titletag' => $titletag, 'description' => $description, 'salons' => $salons, 'area_flash' => $area_flash, 'area_code' => $area_code]);
 
     }
 
     public function getMachineMany(Request $request)
     {
-        $area_flash = $request->input('area_flash');
+        $request->session()->put('hisaronavi_area', $_COOKIE['hisaronavi_area']);
+
+        $area_flash = $request->session()->get('hisaronavi_area');
+
         $area_code = $this->evaluateArea($area_flash);
 
         $salons = Salon::whereBetween('area_code', [$area_code, $area_code+999])
         ->where('kodawari', 'like', '%マシーン種類豊富%')
         ->get();
 
-        $title = 'マシーン種類豊富';
+        $request->session()->put('feature_title', $_COOKIE['feature_title']);
+        $title = $request->session()->get('feature_title');
         $titletag = $area_flash.'のマシーンの種類が豊富な日焼けサロン';
         $description = $area_flash.'のマシーンの種類が豊富な日焼けサロン情報。お得なクーポン、口コミ、住所、電話番号、日焼け情報など便利な情報満載です。日サロナビでお得な情報をゲットしよう！';
         $keywords = 'マシーン種類豊富,'.$area_flash.',日焼け,日サロ,日サロナビ';
-        return view('feats.common', ['keywords' => $keywords, 'title' => $title, 'titletag' => $titletag, 'description' => $description, 'salons' => $salons, 'area' => $area_flash, 'area_code' => $area_code]);
+        return view('feats.common', ['keywords' => $keywords, 'title' => $title, 'titletag' => $titletag, 'description' => $description, 'salons' => $salons, 'area_flash' => $area_flash, 'area_code' => $area_code]);
 
     }
 
     public function getPrepaid(Request $request)
     {
-        $area_flash = $request->input('area_flash');
+        $request->session()->put('hisaronavi_area', $_COOKIE['hisaronavi_area']);
+
+        $area_flash = $request->session()->get('hisaronavi_area');
         $area_code = $this->evaluateArea($area_flash);
 
         $salons = Salon::whereBetween('area_code', [$area_code, $area_code+999])
         ->where('kodawari', 'like', '%お得な回数券・プリペイドカードあり%')
         ->get();
 
-        $title = 'お得な回数券・プリペイドカードあり';
+        $request->session()->put('feature_title', $_COOKIE['feature_title']);
+        $title = $request->session()->get('feature_title');
         $titletag = $area_flash.'のお得な回数券・プリペイドカードありの日焼けサロン';
         $description = $area_flash.'のお得な回数券・プリペイドカードありの日焼けサロン情報。お得なクーポン、口コミ、住所、電話番号、日焼け情報など便利な情報満載です。日サロナビでお得な情報をゲットしよう！';
         $keywords = $title.','.$area_flash.',日焼け,日サロ,日サロナビ';
-        return view('feats.common', ['keywords' => $keywords, 'title' => $title, 'titletag' => $titletag, 'description' => $description, 'salons' => $salons, 'area' => $area_flash, 'area_code' => $area_code]);
+        return view('feats.common', ['keywords' => $keywords, 'title' => $title, 'titletag' => $titletag, 'description' => $description, 'salons' => $salons, 'area_flash' => $area_flash, 'area_code' => $area_code]);
+
+    }
+
+    public function getFeaturesResult(Request $request)
+    {
+        $detail_area = $_GET['areachoice'];
+        $title = $request->session()->get('feature_title');
+        $s = new SalonsController();
+        $darray = array();
+        foreach ($detail_area as $key => $value) {
+            array_push($darray, $s->areaEvaluate($value));
+        }
+
+        $d_area_name = implode(',', $darray);
+
+        $salons = Salon::whereIn('area_code', $detail_area)
+        ->where('kodawari', 'like', '%'.$title.'%')
+        ->get();
+
+        $titletag = $d_area_name.'の'.$title;
+        $description = $d_area_name.'の'. $title .'情報。お得なクーポン、口コミ、住所、電話番号、日焼け情報など便利な情報満載です。日サロナビでお得な情報をゲットしよう！';
+        $keywords = $title.','.$d_area_name.',日焼け,日サロ,日サロナビ';
+
+        return view('feats.featuresresult', [
+            'title' => $title,
+            'titletag' => $titletag,
+            'description' => $description,
+            'keywords' => $keywords,
+            'salons' => $salons,
+            'd_area_name' => $d_area_name,
+
+        ]);
 
     }
 }

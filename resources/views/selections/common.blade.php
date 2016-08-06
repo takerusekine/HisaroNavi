@@ -9,13 +9,13 @@
                     {{$area_flash}}
                 </div>
                 <div class="mt-5 letter-brown">
-                    <span class="label label-secondary">特集</span>
+                    <span class="label label-secondary">セレクション</span>
                     {{$title}}
                 </div>
                 <p class="mb-0">
                     Hits:{{count($salons).'件'}}
                 </p>
-                <a href="{{action('FeatureController@getFeatureArea')}}" class="btn btn-default">
+                <a href="{{action('SelectionController@getSelectionDetailArea')}}" class="btn btn-default">
                     <i class="material-icons">search</i><span>エリアをさらに絞り込む</span>
                 </a>
             </div>

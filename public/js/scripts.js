@@ -5,20 +5,19 @@ $(document).ready(function() {
         e.preventDefault();
         $(this).tab('show');
     });
-    $('#areamodal').modal('show');
+    if (!$.cookie('hisaronavi_area')) {
+
+        $('#areamodal').modal('show');
+    } else {
+        $('input[name=area_flash]').attr('value', $.cookie('hisaronavi_area'));
+        $('#areaname').attr('value', $.cookie('hisaronavi_area'));
+    }
+
     $('[data-toggle="tooltip"]').tooltip();
 
     toggleRegion();
-
-
-
     mapListChange();
     sliderClick();
-    //autoSlider();
-    //
-
-    areaRefineAjax();
-    kodawariRefine();
     countHit();
 
     // #で始まるアンカーをクリックした場合に処理
@@ -39,10 +38,6 @@ $(document).ready(function() {
     });
 
 });
-
-
-
-
 
 $('#regionBtn').on('click', function() {
     $('#areamodal').modal('show');
@@ -70,12 +65,15 @@ function areaselect() {
             $('#areamodal').modal('hide');
             var txt = $(this).text();
             txt = $.trim(txt);
-            var val = $(this).attr('id').replace("area-", "");
             $('#areaname').val(txt);
             $('input[name=area_flash]').attr('value', txt);
             $('#areaname').attr('value', txt);
-            $('#areaname').attr('data-area', val);
-            $.cookie('hisaronavi_area', txt);
+            var date = new Date();
+            var minutes = 120;
+            date.setTime(date.getTime() + (minutes * 60 * 1000));
+            $.cookie('hisaronavi_area', txt, {
+                expires: date
+            });
         });
     });
 }
@@ -197,95 +195,31 @@ $(window).scroll(function() {
     }
 });
 
+$('.parent-td label').on('change', function() {
+    var num = $(this).children('input').attr('data-num');
+    if ($(this).children('input[name="parent-check"]').prop('checked')) {
+        $('input[data-num="' + num + '"]').prop('checked', true);
+    } else {
+        $('input[data-num="' + num + '"]').prop('checked', false);
+    }
+});
 
-
-
-function areaRefineAjax() {
-    var dataAreaArr = [];
-    $('input[name=area]').on('click', function() {
-        dataAreaArr = [];
-        $('#ajax-counter').hide();
-        $('#loading').show();
-        var lgArea = $('input[name=lg-region]').val();
-        $('input[name=area]:checked').each(function() {
-            dataAreaArr.push($(this).val());
-        });
-
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        })
-        $.ajax({
-                type: 'GET',
-                url: 'result',
-                data: {
-                    ajaxData: dataAreaArr,
-                    ajaxLgArea: lgArea
-                },
-                timeout: 10000
-            })
-            .done(function(data) {
-                $('#regionSelect').html(data);
-                $('#ajax-counter').text($('#count').text());
-                $('#loading').hide();
-                $('#ajax-counter').show();
-            })
-            .fail(function(data) {
-                alert('おや、何かがおかしいようです。再度選択しなおしてください。');
-            })
-
+$('#feature').find('.list-group-item').on('click', function() {
+    var feature_cookie = $.trim($(this).children('span').text());
+    var date = new Date();
+    var minutes = 120;
+    date.setTime(date.getTime() + (minutes * 60 * 1000));
+    $.cookie('feature_title', feature_cookie, {
+        expires: date
     });
+});
 
-}
-
-function kodawariRefine() {
-    var kodawariArr = [];
-    var lgArea = $('input[name=lg-region]').val();
-    var lower_price = 0;
-    var upper_price = 0;
-    $('select[name=lower_price]').on('change', function() {
-        lower_price = $(this).val();
-        console.log($(this).val());
+$('#selection').find('.list-group-item').on('click', function() {
+    var selection_cookie = $.trim($(this).find('h3').text());
+    var date = new Date();
+    var minutes = 120;
+    date.setTime(date.getTime() + (minutes * 60 * 1000));
+    $.cookie('selection_title', selection_cookie, {
+        expires: date
     });
-
-    $('select[name=upper_price]').on('change', function() {
-        upper_price = $(this).val();
-        console.log($(this).val());
-    });
-
-    $('input[name=kodawari], select[name=upper_price], select[name=lower_price]').on('change', function() {
-        kodawariArr = [];
-        $('#ajax-counter').hide();
-        $('#loading').show();
-        $('input[name=kodawari]:checked').each(function() {
-            kodawariArr.push($(this).val());
-        });
-        console.log(kodawariArr);
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-                type: 'GET',
-                url: 'search/result',
-                data: {
-                    ajaxData: kodawariArr,
-                    ajaxLgArea: lgArea,
-                    ajaxLP: lower_price,
-                    ajaxUP: upper_price
-                },
-                timeout: 10000
-            })
-            .done(function(data) {
-                $('#ajaxReplace').html(data);
-                $('#ajax-counter').text($('#count').text());
-                $('#loading').hide();
-                $('#ajax-counter').show();
-            })
-            .fail(function(data) {
-                alert('おや、何かがおかしいようです。');
-            })
-    });
-}
+});

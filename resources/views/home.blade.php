@@ -2,29 +2,14 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-xs-12 text-xs">
-                {{-- <a href="" class="text-danger">熊本地震の被災者の皆様へ</a> --}}
-            </div>
-        </div>
-        <div class="row">
             <div class="col-xs-12">
-                {!! Form::open(['method' => 'get', 'url' => '/', 'class' => 'form-inline pb-5 pt-5']) !!}
                     <div style="margin-bottom:0;">
                         <label for="areaname"  class="label label-warning">現在のエリア</label>
-                        <input type="text" name="areaname" value="未設定です" id="areaname" class="" disabled="disable" data-area="" style="width:36%;padding-top:8px;border:0;">
+                        <input type="text" name="areaname" value="未設定です" id="areaname" disabled="disable" style="width:36%;padding-top:8px;border:0;">
                         <button type="button" class="btn btn-sm btn-warning-outline font-weight-normal pull-xs-right mb-5 mt-5" id="regionBtn">
                             エリア変更
                         </button>
                     </div>
-                    {{-- <div class="form-group">
-                        <div class="input-group">
-                            {!! Form::text('freeSearch', null, ['class' => 'form-control', 'placeholder' => 'フリー検索']) !!}
-                            <span class="input-group-addon pAll-0">
-                                {!! Form::button('<i class="material-icons">search</i>', ['type' => 'subimit', 'class' => 'pt-0 pb-0']) !!}
-                            </span>
-                        </div>
-                    </div> --}}
-                    {!! Form::close() !!}
                 </div>
             </div>
         </div>
@@ -40,26 +25,20 @@
         <div class="col-xs-12">
             <ul class="nav btn-nav">
                 <li class="btn btn-secondary pAll-0">
-                    {!! Form::open(['method' => 'get', 'action' => 'RegionController@getSelect']) !!}
-                    <input type="hidden" name="area_flash" value="">
-                    <button type="submit" class="nav-link" style="padding:0;width:100%;">
+                    <a href="{{action('RegionController@getAreaSelect')}}" class="nav-link" style="padding:0;width:100%;">
                         <i class="material-icons" style="font-size:2.5rem;">public</i>
                         <div>
                             <strong>エリア・地図</strong><br>で検索
                         </div>
-                    </button>
-                    {!! Form::close();!!}
+                    </a>
                 </li>
                 <li class="btn btn-secondary pAll-0">
-                    {!! Form::open(['method' => 'get', 'action' => 'SearchesController@index']) !!}
-                    <input type="hidden" name="area_flash" value="">
-                    <button type="submit" class="nav-link" style="padding:0;width:100%;">
+                    <a href="{{action('SearchesController@getConditionSearch')}}" class="nav-link" style="padding:0;width:100%;">
                         <i class="material-icons" style="font-size:2.5rem;">touch_app</i>
                         <div>
                             <strong>こだわり条件</strong><br />で検索
                         </div>
-                    </button>
-                    {!! Form::close() !!}
+                    </a>
                 </li>
             </ul>
         </div>

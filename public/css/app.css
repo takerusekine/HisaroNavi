@@ -5476,18 +5476,16 @@ body {
 .list-group-item {
   border-color: #BFB9B0;
   border-radius: 0;
-  padding: 0.5rem; }
-  .list-group-item .btn-block {
-    text-align: left;
-    line-height: 2;
-    color: #66391C; }
-    .list-group-item .btn-block:focus {
-      outline: 0; }
-    .list-group-item .btn-block .material-icons {
-      padding-top: 4px; }
+  padding: 0.8rem 1rem; }
   .list-group-item .material-icons {
     vertical-align: bottom;
     color: #66391C; }
+  .list-group-item h3 {
+    color: #66391C; }
+  .list-group-item img {
+    margin-right: 4px; }
+  .list-group-item span {
+    color: #665e50; }
 
 .list-group-item:first-child {
   border-top-right-radius: 0;
@@ -6119,6 +6117,19 @@ ul.card-text {
   -ms-flex-align: center;
   align-items: center; }
 
+.letter-brown {
+  color: #665e50;
+  font-size: 0.9rem; }
+  .letter-brown span {
+    font-size: 0.8rem;
+    margin: 0 0 4px; }
+
+.letter-brown + p {
+  color: #66391C;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0; }
+
 #regionList {
   margin-top: 10px; }
   #regionList .store-group {
@@ -6205,15 +6216,77 @@ ul.card-text {
 .media {
   margin-top: 0.5rem; }
 
+#area-choice-form #area-choice-table tbody tr td {
+  padding: 8px 12px; }
+
+#area-choice-form #area-choice-table .c-indicator {
+  top: -1px;
+  border: 1px solid #a1887f; }
+
+#area-choice-form #area-choice-table .colspan2 {
+  background: #f9f9f9;
+  border-top: 1px solid #efebe9; }
+
+#area-choice-form #area-choice-table .c-input > input:checked ~ .c-indicator {
+  color: #fff;
+  background-color: #795548; }
+
+#area-choice-form #area-choice-table .child-td {
+  padding-left: 30px; }
+
+#area-choice-form .btn-default {
+  padding: 4px 0.5rem; }
+
+.search-table tbody tr td,
 .search-table tbody tr th {
-  width: 15%; }
+  width: 100%; }
+
+.search-table tbody tr th {
+  background: #f9f9f9;
+  border-top: 1px solid #efebe9; }
 
 .search-table .c-checkbox {
   display: inline-block;
-  margin-left: 0; }
+  margin-left: 0;
+  margin-right: 12px; }
+
+.search-table .c-input {
+  padding-left: 1.3rem; }
 
 .search-table .c-indicator {
-  margin-top: 2px; }
+  margin-top: 2px;
+  border: 1px solid #a1887f; }
+
+.search-table .c-input > input:checked ~ .c-indicator {
+  background-color: #795548; }
+
+.searchform .btn-default {
+  padding: 4px 0.5rem; }
+
+.bottom-fix {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 12px;
+  display: -ms-flexbox;
+  display: flex;
+  z-index: 10; }
+  .bottom-fix button[type=submit] {
+    margin-left: 1rem;
+    z-index: 1;
+    background: #d9534f;
+    border-color: #ff8986;
+    width: 40%; }
+    .bottom-fix button[type=submit] .material-icons,
+    .bottom-fix button[type=submit] span {
+      color: white; }
+  .bottom-fix button[type=button] {
+    background: white;
+    z-index: 1;
+    border-color: #a1887f;
+    width: 40%; }
 
 #feature .label + span {
   padding-left: 4px; }
