@@ -7,14 +7,7 @@
                 <div class="mt-10 letter-brown">
                     <span class="label label-secondary">条件</span>
                     @if (is_array($kodawari))
-                        @foreach ($kodawari as $k)
-                            @if ($k === end($kodawari))
-                                {{$k}}
-                            @else
-                                {{$k . ' / '}}
-                            @endif
-
-                        @endforeach
+                        {{implode($kodawari, ' / ')}}
                     @else
                         {{$kodawari}}
                     @endif

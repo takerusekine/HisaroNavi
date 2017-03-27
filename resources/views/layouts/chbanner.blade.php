@@ -4,7 +4,7 @@
             <div class="col-xs-12">
                 <h2>日焼けチャンネルはこちら</h2>
                 <p class="ch-banner-header">
-                    日焼け派のあなたに！日焼けに関する情報を更新中！
+                    日焼けしたいあなたに！モテたいあなたに！<br>日焼けに関する情報、モテるための情報を更新中〜
                 </p>
                 <div class="ch-banner">
                     <a href="//hiyake1696.com/" target="_blank">

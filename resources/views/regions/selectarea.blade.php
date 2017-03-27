@@ -1,13 +1,12 @@
 @extends('app')
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <h2>{{$area}}エリアの詳細を選ぶ</h2>
-            </div>
-        </div>
+    <div>
+        {!! Breadcrumbs::render('areaSearch') !!}
     </div>
-{!!Form::open(['class' => 'form-group', 'id' => 'area-choice-form', 'action' => 'RegionController@getResult', 'method' => 'get'])!!}
+    <h1 class="result-h1">{{$area}}エリアでエリア検索</h1>
+    @include('layouts.condtable')
+
+{!!Form::open(['class' => 'form-group', 'id' => 'area-choice-form', 'action' => 'ResultsController@getIndex', 'method' => 'get'])!!}
     <table class="table" id="area-choice-table">
         <tbody>
             <?php $k = 0; ?>
@@ -16,7 +15,17 @@
                     <tr>
                         <td class="colspan2 parent-td">
                             <label class="c-input c-checkbox">
-                                <input type="checkbox" name="parent-check" value="{{$skey}}" data-num="{{$k}}">
+                                @if (is_array($detail_area))
+                                    @if(in_array($sval, $detail_area))
+                                        <input type="checkbox" name="parent-check" value="{{$skey}}" data-num="{{$k}}" checked="checked">
+                                        {!! Form::checkbox('parent-check', $skey, true, ['data-num' => $k]) !!}
+                                    @else
+                                        {!! Form::checkbox('parent-check', $skey, false, ['data-num' => $k]) !!}
+
+                                    @endif
+                                @else
+                                    {!! Form::checkbox('parent-check', $skey, false, ['data-num' => $k]) !!}
+                                @endif
                                 <span class="c-indicator"></span>
                                 {{$skey}}
                                 <?php $sum = 0; ?>
@@ -33,7 +42,19 @@
                             <tr>
                             <td class="child-td">
                                 <label class="c-input c-checkbox">
-                                    <input type="checkbox" name="areachoice[]" value="{{$nestval}}" data-num="{{$k}}">
+                                    @if (is_array($detail_area))
+                                        @if(in_array($nestval, $detail_area))
+                                            {!! Form::checkbox('areachoice[]', $nestval, true, ['data-num' => $k]) !!}
+
+
+                                        @else
+                                            {!! Form::checkbox('areachoice[]', $nestval, false, ['data-num' => $k]) !!}
+
+                                        @endif
+                                    @else
+                                        {!! Form::checkbox('areachoice[]', $nestval, false, ['data-num' => $k]) !!}
+
+                                    @endif
                                     <span class="c-indicator"></span>
                                     {{$nestkey.'（'.$salons->where('area_code', strval($nestval))->count().'）'}}
                                 </label>
@@ -44,7 +65,19 @@
                 <tr>
                     <td  class="colspan2">
                         <label class="c-input c-checkbox">
-                            <input type="checkbox" name="areachoice[]" value="{{$sval}}" data-num="{{$k}}">
+                            @if (is_array($detail_area))
+                                @if(in_array($sval, $detail_area))
+                                    {!! Form::checkbox('areachoice[]', $sval, true, ['data-num' => $k]) !!}
+
+                                @else
+                                    {!! Form::checkbox('areachoice[]', $sval, false, ['data-num' => $k]) !!}
+
+                                @endif
+
+                            @else
+                                {!! Form::checkbox('areachoice[]', $sval, false, ['data-num' => $k]) !!}
+
+                            @endif
                             <span class="c-indicator"></span>
                             {{$skey.'（'.$salons->where('area_code', strval($sval))->count().'）'}}
                         </label>

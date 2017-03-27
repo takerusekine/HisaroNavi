@@ -1,6 +1,6 @@
 <?php $prepaids = $info->prepaid; ?>
     <h2>
-        オトク情報
+        {{'【'.$company. $replaceSalonName.'】'}}日焼けサロンのオトク情報
     </h2>
 @unless(count($prepaids) === 0)
     <div class="otokulist">

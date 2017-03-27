@@ -7,13 +7,7 @@
                         エリア
                     </span>
                     @if (is_array($area_cond))
-                        @foreach ($area_cond as $ac)
-                            @unless ($ac === end($area_cond))
-                                {{$ac. ' / '}}
-                            @else
-                                {{$ac}}
-                            @endunless
-                        @endforeach
+                        {{implode($area_cond, ' / ')}}
                     @else
                         {{$area_cond}}
                     @endif

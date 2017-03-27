@@ -1,0 +1,240 @@
+@charset "UTF-8";
+$darkbrown: #66391C;
+$brown: #665e50;
+$brown-letter: #665e50;
+$skyblue: #01A9E0;
+$orangeclr: #F78300;
+$button-border: #837373;
+$list-border: #BFB9B0;
+$footer-color: #373A3C;
+html {
+  font-size: 14px;
+  overflow-x: hidden;
+}
+h2 {
+  margin-left: 10px;
+  color: $darkbrown;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0;
+  margin-top: 1.5rem;
+  padding: 4px;
+  position: relative;
+  &::before {
+    position: absolute;
+    top: 0;
+    left: -10px;
+    content: '';
+    width: 5px;
+    height: 100%;
+    background: $darkbrown;
+    border-radius: 5px;
+  }
+}
+p {
+  padding: 4px;
+  text-align: justify;
+}
+span {
+  display: inline-block;
+}
+a {
+  color: $brand-primary;
+}
+footer {
+  background: $footer-color;
+  padding: 1rem;
+  margin-top: 15px;
+  font-size: 0.5rem;
+  text-align: center;
+  color: white;
+  ul.list-unstyled {
+    padding: 1rem;
+    li {
+      font-size: 0.9rem;
+      padding: 8px;
+      border-bottom: 1px solid #7c7c7c;
+      a {
+        display: block;
+        color: white;
+      }
+    }
+  }
+}
+button {
+  border: 0;
+  background: transparent;
+}
+body {
+  font-family: 'Hiragino Sans','ヒラギノ角ゴシック','Hiragino Kaku Gothic Pro','ヒラギノ角ゴ Pro W3','メイリオ','Meiryo','ＭＳ Ｐゴシック', Osaka, sans-serif;
+  max-width: 768px;
+  margin: auto;
+}
+
+  .affiliate {
+    position: fixed;
+    top: 25px;
+  }
+
+  .affiliate-left {
+    left: calc((100% - 768px)/2 - 180px);
+  }
+
+  .affiliate-right {
+    right: calc((100% - 768px)/2 - 180px);
+  }
+
+
+
+.bg-default {
+  color: black;
+  background: white;
+  margin-top: 50px;
+}
+@for $i from 0 through 20 {
+  .mt-#{$i * 5} {
+    margin-top: #{$i * 5px};
+  }
+  .pt-#{$i * 5} {
+    padding-top: #{$i * 5px};
+  }
+  .mb-#{$i * 5} {
+    margin-bottom: #{$i * 5px};
+  }
+  .pb-#{$i * 5} {
+    padding-bottom: #{$i * 5px};
+  }
+  .mr-#{$i * 5} {
+    margin-right: #{$i * 5px};
+  }
+  .pr-#{$i * 5} {
+    padding-right: #{$i * 5px};
+  }
+  .ml-#{$i * 5} {
+    margin-left: #{$i * 5px};
+  }
+  .pl-#{$i * 5} {
+    padding-left: #{$i * 5px};
+  }
+  .mAll-#{$i * 5} {
+    margin: #{$i * 5px};
+  }
+  .pAll-#{$i * 5} {
+    padding: #{$i * 5px};
+  }
+}
+.text-xs {
+  font-size: 0.8rem;
+}
+.text-sm {
+  font-size: 1rem;
+}
+.text-md {
+  font-size: 1.2rem;
+}
+.text-lg {
+  font-size: 1.5rem;
+}
+.text-xl {
+  font-size: 2rem;
+}
+.lh-normal {
+  line-height: normal;
+}
+.label {
+  font-weight: normal;
+}
+.label-secondary {
+  background: #eee;
+  border: 1px solid #ccc;
+  color: #888;
+}
+ol.breadcrumb {
+  margin-bottom: 0;
+  padding: 4px 12px;
+  background-color: transparent;
+  font-size: 0.7rem;
+  > li + li::before {
+    content: '＞';
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+}
+#range-slider {
+  width: 80%;
+  margin: 3.5rem auto 1rem;
+}
+.noUi-horizontal .noUi-handle {
+  width: 28px;
+}
+.noUi-handle {
+  border-radius: 50%;
+  &::after,
+  &::before {
+    display: none;
+  }
+}
+.noUi-horizontal {
+  .noUi-handle-lower,
+  .noUi-handle-upper {
+    .noUi-tooltip {
+      top: -38px;
+      left: -68%;
+      bottom: auto;
+      width: 60px;
+      border: 0;
+      color: white;
+      background: $darkbrown;
+      position: relative;
+      &::before {
+        content: '';
+        position: absolute;
+        bottom: -15px;
+        left: 22px;
+        width: 16px;
+        height: 16px;
+        border: 8px solid transparent;
+        border-top-color: $darkbrown;
+      }
+    }
+  }
+}
+.noUi-connect {
+  background: #b8edff;
+  box-shadow: 0;
+}
+.fa-ul {
+  margin-left: 0 !important;
+  .fa-li {
+    top: 0.75rem;
+    left: 0!important;
+  }
+}
+.divider {
+  display: block;
+  min-height: 1px;
+  border-top: 3px solid $darkbrown;
+}
+.footer-logo {
+  img {
+    margin: auto;
+    max-width: 250px;
+  }
+}
+
+.flex-around {
+  display: flex;
+  justify-content: space-around;
+}
+
+.rect {
+  width: 300px;
+  height: 250px;
+  margin-top: 1.5rem;
+}
+
+@media screen and (max-width:768px) {
+    .affiliate {
+      display: none;
+    }
+}

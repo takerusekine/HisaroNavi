@@ -39,13 +39,13 @@
 </ul>
 @unless (empty($info['catch_msg']))
     <section>
-        <h2>サロンの特徴</h2>
+        <h2>{{'【'.$company.$replaceSalonName.'】'}}日焼けサロンの特徴</h2>
         <p class="sentence">{{$info['catch_msg']}}</p>
     </section>
 @endunless
 @unless (empty($info['summary']))
     <section>
-        <h2>サロンからのひとこと</h2>
+        <h2>{{'【'.$company.$replaceSalonName.'】日焼けサロン'}}からのひとこと</h2>
         <p class="sentence">
             <?php $summary = explode('■',$info['summary']);?>
             @foreach ($summary as $s)
@@ -57,7 +57,8 @@
     </section>
 @endunless
 <section>
-    <h2>サロンデータ</h2>
+    <h2>{{'【'.$company.$replaceSalonName.'】'}}日焼けサロンのデータ</h2>
+    <p>{{'【'.$company.$replaceSalonName.'】'}}の日焼けサロンデータをご紹介します。</p>
     <div class="row">
         <table class="table table-striped">
             <tbody>
@@ -101,9 +102,12 @@
                 </tr>
                 <tr>
                     <th>住所</th>
-                    <td>
+                    <td class="address-row">
                         @unless (empty($info['address']))
                             {{ $info['address'] }}
+                            <a href="{{$map_url}}" class="btn btn-sm btn-default map-btn">
+                                <i class="material-icons">room</i><span>MAP</span>
+                            </a>
                         @else
                             -
                         @endunless
@@ -132,10 +136,10 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>電話</th>
+                    <th>電話番号</th>
                     <td>
-                        <a href="tel:{{$info['tel']}}" class="hidden-sm-up">{{$info['tel']}}</a>
-                        <p class="hidden-sm-down">{{$info['tel']}}</p>
+                        <a href="tel:{{$info['tel']}}"class="hidden-sm-up" onclick=”ga(‘send’, ‘event’, ‘click’, ‘tel-tap’);”>{{$info['tel']}}</a>
+                        <p class="hidden-sm-down pAll-0 mb-0">{{$info['tel']}}</p>
                     </td>
                 </tr>
                 <tr>
@@ -144,7 +148,7 @@
                     </th>
                     <td>
                         @unless (empty($info['site_url']))
-                            <a href="{{$info['site_url']}}" target="_blank">{{$info['site_url']}}</a>
+                            <a href="{{$info['site_url']}}" target="_blank" rel="nofollow">{{$info['site_url']}}</a>
                         @else
                             -
                         @endunless
@@ -176,17 +180,5 @@
                 </tr>
             </tbody>
         </table>
-    </div>
-    <div class="container">
-        <div class="row">
-            <h2>お問い合わせ</h2>
-            <div class="col-xs-12 mt-5">
-                <button type="button" class="btn btn-block exitbtn">
-                    <a href="tel:{{$info->tel}}">
-                        <i class="material-icons">phonelink_ring</i><span>{{$info->tel}}</span>
-                    </a>
-                </button>
-            </div>
-        </div>
     </div>
 </section>

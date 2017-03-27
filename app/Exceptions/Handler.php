@@ -46,6 +46,7 @@ class Handler extends ExceptionHandler
             $e = new NotFoundHttpException($e->getMessage(), $e);
         }
 
+        // return redirect()->action('HomeController@index');
         return parent::render($request, $e);
     }
 

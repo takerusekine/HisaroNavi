@@ -8,7 +8,15 @@
                 <?php $rks = $radio['kodawari'] ?>
                 @foreach ($rks as $rk)
                     <label class="c-input c-checkbox">
-                        {!! Form::checkbox('kodawari[]', $rk) !!}
+                        @if (is_array($cond))
+                            @if (in_array($rk, $cond))
+                                {!! Form::checkbox('kodawari[]', $rk, true) !!}
+                            @else
+                                {!! Form::checkbox('kodawari[]', $rk) !!}
+                            @endif
+                        @else
+                            {!! Form::checkbox('kodawari[]', $rk) !!}
+                        @endif
                         <span class="c-indicator"></span>
                         {{$rk}}
                     </label>
@@ -21,13 +29,23 @@
         <tr>
             <td>
                 <?php $ris = $radio['salon_info']; ?>
-                @foreach ($ris as $ri)
-                    <label class="c-input c-checkbox">
-                        {!! Form::checkbox('kodawari[]', $ri) !!}
-                        <span class="c-indicator"></span>
-                        {{$ri}}
-                    </label>
-                @endforeach
+                    @foreach ($ris as $ri)
+                        <label class="c-input c-checkbox">
+                            @if (is_array($cond))
+                                @if (in_array($ri, $cond))
+                                    {!! Form::checkbox('kodawari[]', $ri, true) !!}
+                                @else
+                                    {!! Form::checkbox('kodawari[]', $ri) !!}
+                                @endif
+                            @else
+                                {!! Form::checkbox('kodawari[]', $ri) !!}
+                        @endif
+                            <span class="c-indicator"></span>
+                            {{$ri}}
+                        </label>
+                    @endforeach
+
+
             </td>
         </tr>
         <tr>
@@ -35,25 +53,26 @@
         </tr>
         <tr>
             <td>
-                <?php $args =[];
-                    for ($i=1; $i <= 20 ; $i++) {
-                        array_push($args, $i*1000);
-                    }
-                  ?>
-                  <select class="c-select" name="lower_price">
-                      <option value="0">下限金額</option>
-                      @foreach ($args as $a)
-                          <option value="{{$a}}">{{$a.'円'}}</option>
-                      @endforeach
-                  </select>
-                  ~
-                  <select class="c-select" name="upper_price">
-                      <option value="0">上限金額</option>
+                <div>
+                    <label class="c-input c-checkbox" id="slider-check">
+                        @unless (isset($_COOKIE['refineprice']))
+                            {!! Form::checkbox('pricerefine', 1, true) !!}
+                        @else
+                            @if ($_COOKIE['refineprice'] == 1)
+                                {!! Form::checkbox('pricerefine', 1, true) !!}
 
-                      @foreach ($args as $a)
-                          <option value="{{$a}}">{{$a.'円'}}</option>
-                      @endforeach
-                  </select>
+                            @else
+                                {!! Form::checkbox('pricerefine', 0, false) !!}
+
+                            @endif
+                        @endunless
+                        <span class="c-indicator"></span>
+                        価格帯を絞り込む
+                    </label>
+                </div>
+                <div id="range-slider"></div>
+                <input type="hidden" name="lower-price" value="" id="lowerPrice">
+                <input type="hidden" name="upper-price" value="" id="upperPrice">
 
             </td>
         </tr>
@@ -65,7 +84,18 @@
                 <?php $ros = $radio['other']; ?>
                 @foreach ($ros as $ro)
                     <label class="c-input c-checkbox">
-                        {!! Form::checkbox('kodawari[]', $ro) !!}
+                        @if (is_array($cond))
+                            @if (in_array($ro, $cond))
+                                {!! Form::checkbox('kodawari[]', $ro, true) !!}
+
+                            @else
+                                {!! Form::checkbox('kodawari[]', $ro) !!}
+
+                            @endif
+                        @else
+                            {!! Form::checkbox('kodawari[]', $ro) !!}
+
+                        @endif
                         <span class="c-indicator"></span>
                         {{$ro}}
                     </label>

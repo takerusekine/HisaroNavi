@@ -150,7 +150,15 @@ return [
          */
         Collective\Html\HtmlServiceProvider::class,
 
+        /**
+         * SitemapServiceProvider追加
+         */
         Roumen\Sitemap\SitemapServiceProvider::class,
+
+        /**
+         * Breadcrumbs追加
+         */
+         DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
 
     ],
 
@@ -201,6 +209,11 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+
+        /**
+         * Breadcrumbsのaliase
+         */
+        'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
 
     ],
 

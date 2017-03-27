@@ -1,42 +1,34 @@
 <section id="feature">
-	<div class="container">
-		<div class="row">
-			<div class="col-xs-12">
-				<h2>特集から探す</h2>
-			</div>
-		</div>
-			<div class="row">
-				<div class="list-group">
-					<a href="{{action('FeatureController@getReasonable')}}" class="list-group-item">
-						<img src="{{asset('img/feature-icon01.svg')}}" alt="格安サロンアイコン" width="20"/>
-						<span>格安サロン</span>
-						<i class="material-icons pull-xs-right">keyboard_arrow_right</i>
-					</a>
-					<a href="{{action('FeatureController@getFirstDiscount')}}" class="list-group-item">
-						<img src="{{asset('img/feature-icon02.svg')}}" alt="格安サロンアイコン" width="20"/>
-						<span>初回割引あり</span><i class="material-icons pull-xs-right">keyboard_arrow_right</i>
-					</a>
-					<a href="{{action('FeatureController@getStudentDiscount')}}" class="list-group-item">
-						<img src="{{asset('img/feature-icon03.svg')}}" alt="格安サロンアイコン" width="20"/>
-						<span>学割あり</span><i class="material-icons pull-xs-right">keyboard_arrow_right</i>
-					</a>
-					<a href="{{action('FeatureController@getMidnight')}}" class="list-group-item">
-						<img src="{{asset('img/feature-icon04.svg')}}" alt="格安サロンアイコン" width="20"/>
-						<span>深夜まで営業</span><i class="material-icons pull-xs-right">keyboard_arrow_right</i>
-					</a>
-					<a href="{{action('FeatureController@getWomanDiscount')}}" class="list-group-item">
-						<img src="{{asset('img/feature-icon05.svg')}}" alt="格安サロンアイコン" width="20"/>
-						<span>女性割引あり</span><i class="material-icons pull-xs-right">keyboard_arrow_right</i>
-					</a>
-					<a href="{{action('FeatureController@getMachineMany')}}" class="list-group-item">
-						<img src="{{asset('img/feature-icon06.svg')}}" alt="格安サロンアイコン" width="20"/>
-						<span>マシンの種類が豊富</span><i class="material-icons pull-xs-right">keyboard_arrow_right</i>
-					</a>
-					<a href="{{action('FeatureController@getPrepaid')}}" class="list-group-item">
-						<img src="{{asset('img/feature-icon07.svg')}}" alt="格安サロンアイコン" width="20"/>
-						<span>お得な回数券・プリペイドあり</span><i class="material-icons pull-xs-right">keyboard_arrow_right</i>
-					</a>
-				</div>
-		</div>
-	</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>特集から探す</h2>
+            </div>
+        </div>
+            <div class="row">
+                <div class="list-group">
+                    <?php
+                    $featsarr = array(
+                        '1' => '格安サロン',
+                        '2' => '初回割引あり',
+                        '3' => '学割あり',
+                        '4' => '深夜まで営業',
+                        '5' => '女性割引あり',
+                        '6' => 'マシーン種類豊富',
+                        '7' => 'お得な回数券・プリペイドカードあり',
+                    );
+                     foreach ($featsarr as $key => $value) :?>
+
+                    {!!Form::open(['method' => 'get', 'action' => 'ResultsController@getIndex', 'class' => 'list-group-item']) !!}
+                    <input type="hidden" name="kodawari[]" value="{{$value}}">
+                    <button type="submit">
+                        <img src="{{asset('img/feature-icon0'.$key.'.svg')}}" alt="{{$value}}アイコン" width="20"/>
+                        <span>{{$value}}</span>
+                        <i class="fa fa-chevron-right fa-fw pull-xs-right"></i>
+                    </button>
+                    {!! Form::close() !!}
+                <?php endforeach; ?>
+                </div>
+        </div>
+    </div>
 </section>

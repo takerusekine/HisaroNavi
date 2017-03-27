@@ -69,13 +69,13 @@
                                     </dl>
                                 </div>
                                 <div class="media-right media-middle">
-                                    <i class="material-icons">keyboard_arrow_right</i>
+                                    <i class="fa fa-chevron-right fa-fw"></i>
                                 </div>
                             </div>
                             <div class="tel-area">
-                                <a href="tel:{{mb_convert_kana($salon['tel'] , 'as', 'utf-8') }}">
-                                    <i class="medium material-icons">phonelink_ring</i><span>{{mb_convert_kana($salon['tel'] , 'as', 'utf-8') }}</span>
-                                </a>
+    <a href="tel:{{mb_convert_kana($salon['tel'] , 'as', 'utf-8') }}" onclick="ga('send', 'event', 'click', 'tel-tap');">
+        <i class="medium material-icons">phonelink_ring</i><span>{{mb_convert_kana($salon['tel'] , 'as', 'utf-8') }}</span>
+    </a>
                             </div>
                         </a>
                     </section>

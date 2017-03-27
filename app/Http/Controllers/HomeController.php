@@ -16,9 +16,9 @@ class HomeController extends Controller
     {
 
             $arr = ['北海道', '東北', '北陸', '関東', '甲信越','東海', '関西', '中国', '四国', '九州・沖縄'];
-            $titletag = 'Home';
-            $description ='全国の日焼けサロンのお得なクーポン、口コミ、住所、電話番号、日焼け情報など便利な情報満載です。日サロナビでお得な情報をゲットしよう！';
-            $keywords = '日サロ,天サロ,日焼け,日サロナビ';
+            $titletag = '日焼けサロン　料金 ｜日焼けサロンのことなら日サロナビ';
+            $description ='日焼けサロンの紹介サイト【日サロナビ】です。日本全国の日焼けサロンの料金情報、お得なクーポン、口コミ、住所、電話番号、日焼け情報などをらくらく検索。日サロナビでお得な情報を今すぐ検索！';
+            $keywords = '日サロ,天サロ,日焼け,日サロナビ, 日焼けサロン';
             return view('home', ['arr' => $arr, 'titletag' => $titletag, 'description' => $description, 'keywords' => $keywords]);
     }
 }

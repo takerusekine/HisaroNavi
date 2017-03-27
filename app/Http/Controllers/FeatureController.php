@@ -13,49 +13,7 @@ use App\Menu;
 
 class FeatureController extends Controller
 {
-    function evaluateArea($area_flash)
-    {
-
-        switch ($area_flash) {
-            case '北海道':
-                return 1000;
-                break;
-
-            case '東北':
-                return 2000;
-                break;
-            case '北陸':
-                return 3000;
-                break;
-
-            case '関東':
-                return 4000;
-                break;
-
-            case '甲信越':
-                return 5000;
-                break;
-
-            case '東海':
-                return 6000;
-                break;
-
-            case '関西':
-                return 7000;
-                break;
-
-            case '中国':
-                return 8000;
-                break;
-
-            case '四国':
-                return 9000;
-                break;
-            case '九州・沖縄':
-                return 10000;
-                break;
-        }
-    }
+    
 
     public function getFeatureArea(Request $request)
     {
@@ -66,14 +24,9 @@ class FeatureController extends Controller
         $description = $area.'の'. $feature_title .'情報。お得なクーポン、口コミ、住所、電話番号、日焼け情報など便利な情報満載です。日サロナビでお得な情報をゲットしよう！';
         $keywords = $feature_title . ','.$area.',日焼け,日サロ,日サロナビ';
         $large_areacode = $r->largeAreaEv($area);
-        if ($feature_title == '格安サロン') {
-            $salons = Salon::whereBetween('area_code', [$large_areacode, $large_areacode + 999])->get();
-        } else {
             $salons = Salon::whereBetween('area_code', [$large_areacode, $large_areacode + 999])
             ->where('kodawari', 'like', '%'.$feature_title.'%')
             ->get();
-        }
-
         $selectAreaArr = $r->evalateAreaName($area);
         return view('feats.featurearea', [
             'area' => $area,

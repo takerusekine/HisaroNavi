@@ -1,0 +1,544 @@
+@charset "UTF-8";
+.salonHeaderImg {
+  width: 100%;
+  height: 150px;
+  a {
+    display: block;
+    padding: 8px;
+  }
+  img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+#salonheader {
+  position: relative;
+  h1 {
+    color: $darkbrown;
+    padding-right: 60px;
+  }
+  button {
+    .material-icons {
+      vertical-align: bottom;
+    }
+  }
+  .name {
+    font-size: 0.7rem;
+    margin-bottom: 0;
+    color: $brown;
+    line-height: 1;
+    padding: 2px 0;
+  }
+  .label {
+    padding: 4px;
+    margin: 2px -1px;
+  }
+}
+.table {
+  margin-top: 8px;
+  border-top: 1px solid $gray-lightest;
+  border-bottom: 1px solid $gray-lightest;
+  tbody {
+    tr {
+      td,
+      th {
+        border-top: 0;
+        color: $brown;
+        padding: 12px;
+        line-height: normal;
+        font-size: 0.8rem;
+      }
+      th {
+        width: 15%;
+        color: $breadcrumb-divider-color;
+        font-weight: bold;
+      }
+      td {
+        a {
+          word-break: break-all;
+        }
+      }
+      td.address-row {
+        position: relative;
+        padding-right: 80px;
+        .map-btn {
+          top: 15%;
+          .material-icons {
+            float: none;
+          }
+        }
+      }
+    }
+  }
+}
+#menutab {
+  border-bottom: 3px solid $darkbrown;
+  padding-top: 5px;
+  display: flex;
+  justify-content: center;
+  li {
+    margin-left: 3px;
+    .nav-link {
+      border: 1px solid $list-border;
+      border-bottom: 0;
+      border-radius: 3;
+      color: $darkbrown;
+      text-align: center;
+      .material-icons {
+        vertical-align: bottom;
+      }
+    }
+    .nav-link.active {
+      background: $darkbrown;
+      color: white;
+      border-color: $darkbrown $darkbrown transparent;
+    }
+  }
+}
+#menuinfo {
+  h2 {
+    margin-top: 0;
+  }
+  .card {
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+  }
+  .card-header {
+    background-color: $brown;
+    color: white;
+  }
+  .card-body {
+    padding-bottom: 10px;
+    .flex-center {
+      margin-top: 10px;
+    }
+    .container-fluid {
+      padding: 0 4px;
+    }
+  }
+  .refine-btns {
+    .col-xs-4 {
+      padding: 0 2px;
+    }
+    .col-xs-8 {
+      padding: 0 2px;
+    }
+    .btn {
+      border: 1px solid $darkbrown;
+      border-bottom-width: 3px;
+      color: $darkbrown;
+      font-weight: bold;
+      &:focus {
+        outline: 0;
+      }
+    }
+    .refine-btn-active {
+      background: $darkbrown;
+      color: white;
+      border-bottom-color: #371e0f;
+    }
+  }
+  .refine-fix-wrapper {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    .refine-fix {
+      position: relative;
+      width: 100%;
+      max-width: 768px;
+      background: white;
+      margin-bottom: 0;
+      display: flex;
+      justify-content: flex-start;
+      padding-left: 0;
+      &::before {
+        content: 'マシーン絞り込み';
+        position: absolute;
+        top: -29px;
+        left: 0;
+        width: 100%;
+        background: $darkbrown;
+        color: white;
+        padding: 4px 8px;
+      }
+      li {
+        width: 20%;
+        border-left: 1px solid $darkbrown;
+        border-bottom: 1px solid $darkbrown;
+        color: $darkbrown;
+        font-weight: bold;
+        font-size: 1.2rem;
+        list-style-type: none;
+        text-align: center;
+        padding: 12px 0;
+        &:last-of-type {
+          border-right: 1px solid $darkbrown;
+        }
+      }
+      .refine-active {
+        position: relative;
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 5px;
+          background: $darkbrown;
+          z-index: 1;
+        }
+      }
+    }
+  }
+}
+.menulist,
+.otokulist {
+  margin-bottom: 2rem;
+  h2 {
+    margin-bottom: 10px;
+  }
+  h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: $darkbrown;
+    padding-top: 0.5rem;
+    line-height: normal;
+  }
+  p {
+    margin-bottom: 0;
+  }
+  .menu_machine {
+    text-align: left;
+    padding-top: 12px;
+  }
+  .text-danger {
+    font-weight: bold;
+  }
+  p.text-danger {
+    font-size: 1.2rem;
+  }
+  .reasonableContent {
+    text-align: justify;
+    color: $brown-letter;
+    font-size: 0.9rem;
+    line-height: normal;
+    padding: 0;
+  }
+  .detailbtn {
+    margin-top: 10px;
+    .col-xs-5,
+    .col-xs-7 {
+      padding-left: 0;
+      padding-right: 8px;
+      .exitbtn {
+        border: 1px solid $brand-danger;
+        border-bottom-width: 3px;
+        border-radius: 5px;
+        padding: 1px 0;
+        a {
+          display: block;
+          .material-icons {
+            color: $brand-danger;
+            vertical-align: sub;
+            padding-top: 4px;
+          }
+          span {
+            padding: 0 4px;
+            color: $brand-danger;
+            font-weight: bold;
+            font-size: 0.9rem;
+            vertical-align: super;
+          }
+        }
+      }
+      .btn-default {
+        border: 1px solid $darkbrown;
+        border-bottom-width: 3px;
+        border-radius: 5px;
+        padding: 1px 0;
+        display: block;
+        &:focus {
+          outline: 0;
+        }
+        .material-icons {
+          color: $darkbrown;
+          vertical-align: sub;
+          padding-top: 4px;
+        }
+        span {
+          padding: 0 4px;
+          color: $darkbrown;
+          font-weight: bold;
+          font-size: 0.9rem;
+          vertical-align: super;
+        }
+      }
+    }
+  }
+  .last-bd {
+    border-bottom: 1px solid $list-border;
+  }
+  > dl {
+    display: table;
+    border-top: 1px solid $list-border;
+    border-right: 1px solid $list-border;
+    border-left: 1px solid $list-border;
+    margin-bottom: 0;
+    &:last-of-type {
+      border-bottom: 1px solid $list-border;
+    }
+    dd,
+    dt {
+      display: table-cell;
+      vertical-align: top;
+    }
+    > dt {
+      color: white;
+      font-weight: normal;
+      padding: 5px;
+    }
+    > dd {
+      padding: 10px;
+      width: 100%;
+      span.label {
+        padding: 5px 8px;
+        font-size: 0.8rem;
+      }
+    }
+  }
+  .media-body {
+    padding-left: 12px;
+    dl {
+      margin-bottom: 0;
+      dd,
+      dt {
+        color: $darkbrown;
+        span {
+          font-size: 0.9rem;
+          color: $brown-letter;
+        }
+        strong {
+          font-size: 1.2rem;
+        }
+      }
+    }
+  }
+}
+.option-list {
+  h3 {
+    display: inline-block;
+    width: 80%;
+    font-size: 1rem;
+    font-weight: bolder;
+    color: $darkbrown;
+    padding: 4px;
+    margin-bottom: 0;
+    line-height: normal;
+  }
+  span {
+    display: inline-block;
+    float: right;
+    vertical-align: top;
+    font-weight: bolder;
+    font-size: 1rem;
+    line-height: normal;
+    padding: 4px 0;
+  }
+  p {
+    margin-bottom: 0;
+  }
+}
+.wfull {
+  width: 100%;
+}
+#saloninfo {
+  .slider {
+    padding: 0;
+    .showimg {
+      display: block;
+    }
+    li {
+      list-style-type: none;
+      display: none;
+      img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        object-position: center;
+      }
+    }
+  }
+  .sliderIndex {
+    padding: 0 5px;
+    display: flex;
+    justify-content: space-around;
+    .active {
+      img {
+        opacity: 0.4;
+      }
+    }
+    li {
+      width: 30%;
+      height: 44px;
+      list-style-type: none;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+    }
+  }
+  .catch {
+    border-left: 0;
+    line-height: normal;
+  }
+}
+.modal-content {
+  padding: 12px;
+  .modal-body {
+    padding-top: 0;
+    .label {
+      padding: 4px;
+    }
+    p {
+      font-size: 0.9rem;
+      color: $brown-letter;
+      padding: 4px 0;
+      line-height: normal;
+      margin-top: 8px;
+    }
+    p + p {
+      margin-top: 0;
+    }
+  }
+}
+#couponinfo {
+  h2 {
+    margin-top: 0;
+  }
+  .otokulist {
+    margin-top: 10px;
+  }
+}
+.tab-pane {
+  p {
+    color: $brown-letter;
+  }
+}
+.exitbtn {
+  border: 1px solid $brand-danger;
+  border-bottom-width: 3px;
+  border-radius: 5px;
+  padding: 2px 0;
+  a {
+    display: block;
+    .material-icons {
+      color: $brand-danger;
+      vertical-align: sub!important;
+      padding-top: 4px;
+    }
+    span {
+      padding: 0 4px;
+      color: $brand-danger;
+      font-weight: bold;
+      font-size: 0.9rem;
+      vertical-align: super;
+    }
+  }
+}
+.btn-default {
+  border: 1px solid $darkbrown;
+  border-bottom-width: 3px;
+  border-radius: 5px;
+  padding: 2px 0;
+  display: block;
+  &:focus {
+    outline: 0;
+  }
+  .material-icons {
+    color: $darkbrown;
+    vertical-align: sub;
+    padding-top: 4px;
+  }
+  span {
+    padding: 0 4px;
+    color: $darkbrown;
+    font-weight: bold;
+    font-size: 0.9rem;
+    vertical-align: super;
+  }
+}
+#tab-btn {
+  display: flex;
+  justify-content: space-between;
+  padding: 2rem 0.9375rem 0;
+  margin-bottom: 0;
+  li {
+    width: 33%;
+    list-style-type: none;
+    padding-left: 2px;
+    &:first-child {
+      padding-left: 0;
+    }
+    button {
+      padding: 7px 0;
+      span {
+        vertical-align: middle;
+      }
+    }
+    .active-btn {
+      background: #66391C;
+      border-bottom-color: #371e0f;
+      span {
+        color: white;
+      }
+    }
+  }
+}
+.arrow {
+  position: relative;
+  margin-bottom: 28px;
+  font-size: 1.1rem;
+  font-weight: bolder;
+  color: $darkbrown;
+  padding-bottom: 8px;
+  &::before {
+    position: absolute;
+    content: '';
+    top: 90%;
+    left: calc(50% - 10px);
+    width: 20px;
+    height: 10px;
+    background: $gray-light;
+  }
+  &::after {
+    position: absolute;
+    content: '';
+    top: 120%;
+    left: calc(50% - 20px);
+    border: 20px solid transparent;
+    border-top-color: $gray-light;
+  }
+}
+.map-btn {
+  position: absolute;
+  top: 6px;
+  right: 12px;
+  background: white;
+  .material-icons {
+    padding-top: 0;
+    font-size: 1.3rem;
+    vertical-align: middle;
+  }
+  span {
+    padding: 0 4px 0 0;
+    vertical-align: middle;
+  }
+}

@@ -1,5 +1,5 @@
 <h2>
-    マシーン
+    日焼けマシーン
 </h2>
 @unless (count($info->menu) === 0)
     <div class="card">
@@ -136,7 +136,7 @@
                                                             </div>
                                                             <div class="col-xs-7">
                                                                 <button type="button"  class="btn btn-block exitbtn">
-                                                                    <a href="tel:{{$info->tel}}">
+                                                                    <a href="tel:{{$info->tel}}" onclick="ga('send', 'event', 'click', 'tel-tap');">
                                                                         <i class="material-icons">phonelink_ring</i><span>{{$info->tel}}</span>
                                                                     </a>
                                                                 </button>
@@ -144,6 +144,20 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                @else
+                                                    <div class="detailbtn">
+                                                        <div class="container-fluid">
+                                                            <div class="row">
+                                                                <div class="col-xs-12">
+                                                                    <button type="button"  class="btn btn-block exitbtn">
+                                                                        <a href="tel:{{$info->tel}}" onclick="ga('send', 'event', 'click', 'tel-tap');">
+                                                                            <i class="material-icons">phonelink_ring</i><span>{{$info->tel}}</span>
+                                                                        </a>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                             @endunless
                                             <div class="modal fade" id="detailModal{{$i}}">
                                                 <div class="modal-dialog">
@@ -187,7 +201,7 @@
                                                             @endunless
                                                             <div class="mt-10">
                                                                 <button type="button" class="btn btn-block exitbtn">
-                                                                    <a href="tel:{{$info->tel}}"><i class="material-icons">phonelink_ring</i><span>{{$info->tel}}</span></a>
+                                                                    <a href="tel:{{$info->tel}}" onclick="ga('send', 'event', 'click', 'tel-tap');"><i class="material-icons">phonelink_ring</i><span>{{$info->tel}}</span></a>
                                                                 </button>
                                                             </div>
                                                         </div>

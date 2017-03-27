@@ -16,9 +16,9 @@ Route::get('menu', 'MenuController@index');
 Route::get('capture', 'CaptureController@index');
 Route::resource('salon', 'SalonsController', ['only' => 'show']);
 Route::controller('region', 'RegionController');
-Route::get('map', 'MapController@index');
+Route::controller('result', 'ResultsController');
+Route::get('map/{id}', 'MapController@index');
 Route::controller('search', 'SearchesController');
-Route::get('experiment', 'SearchesController@experiment');
 Route::controller('feature', 'FeatureController');
 Route::controller('selection', 'SelectionController');
 
@@ -111,12 +111,84 @@ Route::get('sitemap', function()
             10701,
             10801,
         );
+        $lp = array(
+            0,500,1000,1500,2000,
+        );
+        $up = array (
+            1000, 1500, 2000, 2500,
+        );
+
+        $kodawari = array(
+            '格安サロン',
+            '駅近',
+            'お得な回数券・プリペイドカードあり',
+            '強力マシーンあり',
+            'マシーン種類豊富',
+            '女性割引あり',
+            '学割あり',
+            '朝割引あり',
+            '夜割引あり',
+            '初回割引あり',
+            '紹介割引あり',
+            '朝まで営業',
+            '深夜まで営業',
+            '24時間営業',
+            '駐車場あり',
+            'トレーニングジム併設',
+            'コラーゲンマシーンあり',
+            '酸素カプセルあり',
+            'ドリンクサービスあり',
+            '完全予約制',
+            '予約優先',
+            '予約割引あり',
+            '大人向けサロン',
+            '完全個室',
+            '手ぶらＯＫ',
+            'クレジットカード利用可能',
+            '温泉施設あり',
+            '美容院併設',
+            '理容室併設',
+            'メルマガ割引あり',
+            '雨の日割引あり',
+            '18歳未満お断り',
+            '焼き放題メニューあり',
+            'カラオケ併設',
+            'マッサージあり',
+            'ネイルあり',
+        );
         foreach ($area_arr as $ar) {
-            $sitemap->add(url('region/result?areachoice%5B%5D=' . $ar), '2016-08-06T13:15:00+09:00', '0.8', 'monthly');
+            $sitemap->add(url('result?areachoice%5B%5D=' . $ar), '2016-08-06T13:15:00+09:00', '0.8', 'monthly');
         }
+
+        foreach ($kodawari as $kval) {
+            foreach ($lp as $lpval) {
+                foreach ($up as $upval) {
+                    if($upval - $lpval >= 1000){
+                        $sitemap->add(url('result?kodawari%5B%5D=' . $kval . '&pricerefine=1&lower-price='.$lpval.'&upper-price='.$upval), '2016-08-06T13:15:00+09:00', '0.8', 'monthly');
+                    }
+                }
+            }
+        }
+
+        foreach ($kodawari as $kval) {
+            foreach ($lp as $lpval) {
+                foreach ($up as $upval) {
+                    if($upval - $lpval >= 1000){
+                        $sitemap->add(url('result?kodawari%5B%5D=' . $kval . '&lower-price='.$lpval.'&upper-price='.$upval), '2016-08-06T13:15:00+09:00', '0.8', 'monthly');
+                    }
+                }
+            }
+        }
+
+
+
         $salons = DB::table('salons')->orderBy('id')->lists('id');
         foreach ($salons as $salon) {
             $sitemap->add(url('salon/'.$salon), '2016-08-06T13:15:00+09:00', '0.8', 'monthly');
+            $sitemap->add(url('map/'.$salon), '2016-08-06T13:15:00+09:00', '0.8', 'monthly');
         }
+        $sitemap->add(url('/'), '2016-08-06T13:15:00+09:00', '0.8', 'monthly');
+
+
     return $sitemap->render('xml');
 });

@@ -11,7 +11,7 @@ use App\Salon;
 
 class RegionController extends Controller
 {
-    public function evalateAreaName($area)
+    public function evaluateAreaName($area)
     {
         $areaname = array(
             '北海道' =>  array(
@@ -90,8 +90,8 @@ class RegionController extends Controller
                     '小牧・北名古屋・一宮・春日井' => 6203,
                     '豊田・刈谷・岡崎・豊橋' => 6204,
                 ),
-                '岐阜県' => 6031,
-                '三重県' => 6041,
+                '岐阜県' => 6301,
+                '三重県' => 6401,
             ),
             '関西' => array(
                 '大阪府' => array(
@@ -159,176 +159,174 @@ class RegionController extends Controller
         return $array[$area];
     }
 
-    public function getAreaSelect(Request $request)
+    function areaEvaluate($area_code)
     {
-        $request->session()->put('hisaronavi_area', $_COOKIE['hisaronavi_area']);
-        $area = $request->session()->get('hisaronavi_area');
-        $selectAreaArr = $this->evalateAreaName($area);
-        $areaCode = $this->largeAreaEv($area);
-        $salons = Salon::whereBetween('area_code', [$areaCode, $areaCode+999])->get();
-        $titletag = $area.'エリア選択';
-        $description = $area. 'エリアを選択。日焼けサロンのお得なクーポン、口コミ、住所、電話番号、日焼け情報など便利な情報満載です。日サロナビでお得な情報をゲットしよう！';
-        $keywords = $area. ',日焼け,日サロ,日サロナビ';
-        return view('regions.selectarea', [
-            'titletag' => $titletag,
-            'description' => $description,
-            'keywords' => $keywords,
-            'selectAreaArr' => $selectAreaArr,
-            'area' => $area,
-            'salons' => $salons,
-            'areaCode' => $areaCode,
-        ]);
+        $evalarea = array(
+            1000 => '北海道',
+            1001 => '札幌市',
+            1002 => '札幌市以外',
+            2000 => '東北',
+            2101 => '青森県',
+            2201 => '秋田県',
+            2301 => '岩手県',
+            2401 => '山形県',
+            2501 => '仙台市',
+            2502 => 'その他宮城県',
+            2601 => '福島県',
+            3000 => '北陸',
+            3101 => '富山県',
+            3201 => '石川県',
+            3301 => '福井県',
+            4000 => '関東',
+            4101 => '池袋・目白',
+            4102 => '赤羽・王子・板橋・成増',
+            4103 => '新宿・代々木・高田馬場・飯田橋',
+            4104 => '練馬・大泉学園・荻窪・中野',
+            4105 => '渋谷・青山・恵比寿',
+            4106 => '明大前・三軒茶屋・自由が丘・駒沢',
+            4107 => '赤坂・六本木・新橋',
+            4108 => '品川・大森・蒲田・五反田',
+            4109 => '上野・浅草・錦糸町・神田',
+            4110 => '亀有・小岩・葛西',
+            4111 => '北千住・竹ノ塚',
+            4112 => '立川・八王子・福生・国分寺',
+            4113 => '町田・多摩',
+            4114 => '調布・吉祥寺・西東京',
+            4201 => '横浜・上大岡・金沢・鶴見',
+            4202 => '戸塚・瀬谷・青葉台・たまプラーザ',
+            4203 => '川崎市',
+            4204 => '横須賀・藤沢',
+            4205 => '茅ヶ崎・平塚・小田原',
+            4206 => '厚木・相模原・大和',
+            4301 => 'さいたま・川口・蕨',
+            4302 => '越谷・久喜・春日部・草加',
+            4303 => '所沢・川越・新座・和光',
+            4304 => '熊谷・鴻巣・上尾',
+            4401 => '千葉・木更津',
+            4402 => '柏・松戸',
+            4403 => '船橋',
+            4501 => '群馬県',
+            4601 => '栃木県',
+            4701 => '茨城県',
+            5000 => '甲信越',
+            5101 => '新潟県',
+            5201 => '長野県',
+            5301 => '山梨県',
+            6000 => '東海',
+            6101 => '浜松',
+            6102 => 'その他静岡県',
+            6201 => '名駅・栄・金山',
+            6202 => '藤が丘・今池・八事・野並',
+            6203 => '小牧・北名古屋・一宮・春日井',
+            6204 => '豊田・刈谷・岡崎・豊橋',
+            6301 => '岐阜県',
+            6401 => '三重県',
+            7000 => '関西',
+            7101 => '梅田・京橋・十三・新大阪',
+            7102 => '心斎橋・難波・天王寺',
+            7103 => '堺・岸和田・泉佐野・八尾',
+            7104 => '枚方・寝屋川・東大阪',
+            7105 => '豊中・池田・吹田・茨木',
+            7201 => '京都府',
+            7301 => '神戸市内',
+            7302 => 'その他兵庫県',
+            7401 => '奈良県',
+            7501 => '滋賀県',
+            7601 => '和歌山県',
+            8000 => '中国',
+            8101 => '岡山県',
+            8201 => '広島県',
+            8301 => '鳥取県',
+            8401 => '島根県',
+            8501 => '山口県',
+            9000 => '四国',
+            9101 => '愛媛県',
+            9201 => '徳島県',
+            9301 => '香川県',
+            9401 => '高知県',
+            10000 => '九州・沖縄',
+            10101 => '福岡市内',
+            10102 => 'その他福岡県',
+            10201 => '熊本県',
+            10301 => '佐賀県',
+            10401 => '長崎県',
+            10501 => '大分県',
+            10601 => '宮崎県',
+            10701 => '鹿児島県',
+            10801 => '沖縄県',
+        );
+        return $evalarea[$area_code];
     }
 
-    public function getDetailArea(Request $request)
+    public function descArea($area_floor)
     {
-        $request->session()->put('hisaronavi_area', $_COOKIE['hisaronavi_area']);
-        $area = $request->session()->get('hisaronavi_area');
-        $selectAreaArr = $this->evalateAreaName($area);
-        $areaCode = $this->largeAreaEv($area);
-        $salons = Salon::whereBetween('area_code', [$areaCode, $areaCode+999])->get();
-        $titletag = $area.'エリア選択';
-        $description = $area. 'エリアを選択。日焼けサロンのお得なクーポン、口コミ、住所、電話番号、日焼け情報など便利な情報満載です。日サロナビでお得な情報をゲットしよう！';
-        $keywords = $area. ',日焼け,日サロ,日サロナビ';
-        $kodawari = $request->session()->get('kodawari');
-        return view('regions.selectdetail', [
-            'titletag' => $titletag,
-            'description' => $description,
-            'keywords' => $keywords,
-            'selectAreaArr' => $selectAreaArr,
-            'area' => $area,
-            'salons' => $salons,
-            'areaCode' => $areaCode,
-            'kodawari' => $kodawari,
-        ]);
+        $areadisc = array(
+            10 => '北海道',
+            //東北
+            21 => '青森県',
+            22 => '秋田県',
+            23 => '岩手県',
+            24 => '山形県',
+            25 => '宮城県',
+            26 => '福島県',
+            //北陸
+            31 => '富山県',
+            32 => '石川県',
+            33 => '福井県',
+            //関東
+            41 => '東京都',
+            42 => '神奈川県',
+            43 => '埼玉県',
+            44 => '千葉県',
+            45 => '群馬県',
+            46 => '栃木県',
+            47 => '茨城県',
+            //甲信越
+            51 => '新潟県',
+            52 => '長野県',
+            53 => '山梨県',
+            //東海
+            61 => '静岡県',
+            62 => '愛知県',
+            63 => '岐阜県',
+            64 => '三重県',
+            //関西
+            71 => '大阪府',
+            72 => '京都府',
+            73 => '兵庫県',
+            74 => '奈良県',
+            75 => '滋賀県',
+            76 => '和歌山県',
+            //中国
+            81 => '岡山県',
+            82 => '広島県',
+            83 => '鳥取県',
+            84 => '島根県',
+            85 => '山口県',
+            //四国
+            91 => '愛媛県',
+            92 => '徳島県',
+            93 => '香川県',
+            94 => '高知県',
+            //九州・沖縄
+            101 => '福岡県',
+            102 => '熊本県',
+            103 => '佐賀県',
+            104 => '長崎県',
+            105 => '大分県',
+            106 => '宮崎県',
+            107 => '鹿児島県',
+            108 => '沖縄県',
+        );
+
+        return $areadisc[$area_floor];
     }
 
-    public function getResult(Request $request)
+    public function getExperiment(Request $request)
     {
-        $url = $request->query();
-        $area = $request->session()->get('hisaronavi_area');
-        if (!empty($area)) {
-            $default_areacode = $this->largeAreaEv($area);
-        }else {
-            if (count($url['areachoice']) === 1 ) {
-                $default_areacode = intval($url['areachoice']['0']);
-            } else {
-                $default_areacode = $url['areachoice'];
-            }
-        }
-        if (!empty($_GET['areachoice'])) {
-            $request->session()->put('detail_area', $_GET['areachoice']);
-            $salons = Salon::whereIn('area_code', $_GET['areachoice'])->get();
-            $detail_area = $request->session()->get('detail_area', $default_areacode);
-        } else {
-            if (!empty($area)) {
-                $salons = Salon::whereBetween('area_code', [$default_areacode, $default_areacode+999])->get();
-
-            } else {
-                if (count($url['areachoice']) === 1) {
-                    $salons = Salon::where('area_code', $default_areacode)->get();
-                } else {
-                    $salons = Salon::whereIn('area_code', $default_areacode)->get();
-                }
-            }
-
-            $detail_area = $default_areacode;
-        }
-        $area_array = array();
-        $s = new SalonsController();
-        if (is_array($detail_area)) {
-            foreach ($detail_area as $key => $value) {
-                array_push($area_array, $s->areaEvaluate(intval($value)));
-            }
-            $area_cond = $area_array;
-        } else {
-            $area_cond = $area;
-        }
-        $titletag = $area.'エリア選択';
-        $description = $area. 'エリアを選択。日焼けサロンのお得なクーポン、口コミ、住所、電話番号、日焼け情報など便利な情報満載です。日サロナビでお得な情報をゲットしよう！';
-        $keywords = $area. ',日焼け,日サロ,日サロナビ';
-        return view('regions.rswrapper', [
-            'area' => $area,
-            'detail_area' => $detail_area,
+        $salons = Salon::orderBy('id', 'asc')->get();
+        return view('experiment', [
             'salons' => $salons,
-            'titletag' => $titletag,
-            'description' => $description,
-            'keywords' => $keywords,
-            'area_cond' => $area_cond,
-            'url' => $url,
         ]);
     }
-
-    public function getDetailResult(Request $request)
-    {
-        $area = $request->session()->get('hisaronavi_area');
-        $default_areacode = $this->largeAreaEv($area);
-        $kodawari = $request->session()->get('kodawari');
-        $up_cond = $request->session()->get('upper_price', 0);
-        $lp_cond = $request->session()->get('lower_price', 0);
-
-
-        if (isset($_GET['areachoice'])) {
-            $request->session()->put('detail_area', $_GET['areachoice']);
-            $before_filter = Salon::whereIn('area_code', $_GET['areachoice']);
-        } else {
-            $before_filter = Salon::whereBetween('area_code', [$default_areacode, $default_areacode+999]);
-        }
-
-        $detail_area = $request->session()->get('detail_area', $area);
-        $s = new SalonsController();
-        $areaname_array = array();
-        foreach ($detail_area as $key => $value) {
-            array_push($areaname_array, $s->areaEvaluate($value));
-        }
-        $area_cond = $areaname_array;
-        foreach ($kodawari as $key => $value) {
-            if ($key == 0) {
-                $before_filter->where('kodawari','like', '%'.$value.'%')->whereIn('area_code', $detail_area);
-            }else {
-                $before_filter->orWhere('kodawari','like', '%'. $value . '%')->whereIn('area_code', $detail_area);
-            }
-        }
-
-        $before_salons = $before_filter->get();
-
-
-            $sal = $before_salons->filter(function ($item) use($up_cond, $lp_cond)
-            {
-                if (!empty($up_cond) && !empty($lp_cond)) {
-                    //上限下限金額設定あり
-                    return $item['min_price'] <= $up_cond && $item['min_price'] >= $lp_cond && !empty($item['min_price']);
-                } elseif (!empty($up_cond) && empty($lp_cond)) {
-                    //上限のみ
-                    return $item['min_price'] <= $up_cond && !empty($item['min_price']);
-
-                } elseif (empty($up_cond) && !empty($lp_cond)) {
-                    // 下限のみ
-                    return $item['min_price'] >= $lp_cond && !empty($item['min_price']);
-                } else {
-                    // 設定なし
-                    return $item;
-                }
-            });
-
-            $salons = $sal->all();
-
-
-        $titletag = $area.'エリア選択';
-        $description = $area. 'エリアを選択。日焼けサロンのお得なクーポン、口コミ、住所、電話番号、日焼け情報など便利な情報満載です。日サロナビでお得な情報をゲットしよう！';
-        $keywords = $area. ',日焼け,日サロ,日サロナビ';
-        return view('regions.rswrapper', [
-            'area' => $area,
-            'detail_area' => $detail_area,
-            'salons' => $salons,
-            'titletag' => $titletag,
-            'description' => $description,
-            'keywords' => $keywords,
-            'area_cond' => $area_cond,
-            'kodawari' => $kodawari,
-            'up_cond' => $up_cond,
-            'lp_cond' => $lp_cond,
-        ]);
-    }
-
 }

@@ -1,23 +1,22 @@
 @extends('app')
 @section('content')
-    
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCH5HaURJ0FPsE-C5G6VWF60f26mW9nGkM&signed_in=true&callback=initMap" async defer></script>
-    <script src="{{asset('js/gmap.min.js')}}" charset="utf-8"></script>
-    <div id="gps">
-        <style media="screen">
-        #map {
-            height: 300px;
-            }
-        </style>
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12">
-                    現在地
-                    <div id="map">
-
-                    </div>
+    <div class="container" id="map-view">
+        <div class="row">
+            <h1 id="company_map" class="result-h1">
+                <a href="{{str_replace('map', 'salon',Request::url())}}">
+                    <span id="content_string">
+                <i class="fa fa-fw fa-chevron-left"></i>
+                        {{$companyName.$replaceSalonName. 'の日焼けサロン住所・地図'}}
+                    </span>
+                </a>
+            </h1>
+            <div class="col-xs-12">
+                <div class="map-address letter-brown" id="salon_address">
+                    {{$salon_map->address}}
                 </div>
             </div>
+            <div id="map"></div>
         </div>
     </div>
+    <script async src="{{asset('js/gmap.min.js')}}" charset="utf-8"></script>
 @endsection

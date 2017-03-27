@@ -1,0 +1,69 @@
+#s-form {
+  margin-bottom: 0;
+}
+.search-table {
+  margin-top: 0;
+  margin-bottom: 0;
+  tbody {
+    tr {
+      td,
+      th {
+        width: 100%;
+      }
+      th {
+        background: $table-bg-accent;
+        border-top: 1px solid #efebe9;
+      }
+    }
+  }
+  .c-checkbox {
+    display: inline-block;
+    margin-left: 0;
+    margin-right: 12px;
+  }
+  .c-input {
+    padding-left: 1.3rem;
+  }
+  .c-indicator {
+    margin-top: 2px;
+    border: 1px solid $gray-lighter;
+  }
+  .c-input > input:checked ~ .c-indicator {
+    background-color: $gray-light;
+  }
+}
+.searchform {
+  .btn-default {
+    padding: 4px 0.5rem;
+  }
+}
+.bottom-fix {
+  position: fixed;
+  width: 100%;
+  max-width: 768px;
+  bottom: 0;
+  left: 0;
+  right:0;
+  margin:auto;
+  background: rgba(0 , 0, 0, .7);
+  padding: 12px;
+  display: flex;
+  z-index: 10;
+  button[type=submit] {
+    margin-left: 1rem;
+    z-index: 1;
+    background: $brand-danger;
+    border-color: #ff8986;
+    width: 40%;
+    .material-icons,
+    span {
+      color: white;
+    }
+  }
+  button[type=button] {
+    background: white;
+    z-index: 1;
+    border-color: $gray-lighter;
+    width: 40%;
+  }
+}
